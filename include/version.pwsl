@@ -1,0 +1,4 @@
+linkdef/"_getver","gv"
+{
+	set/"VER","v0.1.0"
+}

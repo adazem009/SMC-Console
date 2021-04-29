@@ -1,0 +1,4 @@
+CONFIG_COMPILER_URL="https://github.com/adazem009/PowerSlash"
+CONFIG_COMPILER_PATH="compiler"
+CONFIG_VERSION="v0.1.0"
+CONFIG_CONVERT=y

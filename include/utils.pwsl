@@ -1,0 +1,67 @@
+// SMC Console
+//
+//    Copyright (C) 2021  adazem009
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+linkdef/"_exit","ex"
+{
+	// _exit
+	// (no arguments)
+	print/"Bye!",\n
+	print/"Shutting down...",\n
+	shutdown
+}
+linkdef/"_compose","cmp"
+{
+	warp
+		// _compose
+		// (no arguments)
+		set/"SMC",""/"i1",0
+		getlistlength/"ins"/"il"
+		repeat/il
+			calc/"i1=i1+1"
+			getitem/"ins",i1/"cins"
+			getlength/cins/"csl"
+			set/"SMC",SMC,csl,";",cins
+		endloop
+	endwarp
+}
+linkdef/"_loadbin","lb"
+{
+	warp
+		// _loadbin
+		// (no arguments)
+		setlist/"ins"
+		getlength/bin/"bl"
+		set/"i1",0
+		while/[i1 < bl]
+			set/"tmp1",""/"let",""
+			while/[let != ";"] and [i1 < bl]
+				calc/"i1=i1+1"
+				getletter/bin,i1/"let"
+				if/[let != ";"]
+					set/"tmp1",tmp1,let
+				endif
+			endloop
+			set/"tmp",""
+			repeat/tmp1
+				calc/"i1=i1+1"
+				getletter/bin,i1/"let"
+				set/"tmp",tmp,let
+			endloop
+			append/tmp/"ins"
+		endloop
+	endwarp
+}

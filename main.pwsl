@@ -1,0 +1,84 @@
+// SMC Console
+//
+//    Copyright (C) 2021  adazem009
+//
+// A debugging tool for SMC Computer. Can be used as a BIOS.
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+include/"license.pwsl"
+include/"utils.pwsl"
+include/"commands.pwsl"
+include/"version.pwsl"
+warp
+	// Init
+	print/"Hello, ",%user,"!",\n
+	setlist/"ins"
+	_getver
+endwarp
+while/[true]
+	// Ask for opcode/command
+	print/"SMC> "
+	read/"","op"
+	print/op,\n
+	if/[op != ""]
+		set/"tmp","tmp_lib_cmd_",op
+		readvar/tmp/"val"
+		if/[val == ""]
+			// This command isn't defined, so it's an SMC instruction
+			append/op/"ins"
+			if/[op == ">>"]
+				// Special variable setting method
+				// >>
+				// variable name (no quotes)
+				// variable value (no quotes)
+				print/"name: "
+				read/"","in"
+				print/in,\n
+				append/in/"ins"
+				print/"value: "
+				read/"","in"
+				print/\i1,"(value hidden)",\i0,\n
+				append/in/"ins"
+			else
+				// Ask for argument count
+				print/"ac: "
+				read/"","ac"
+				print/ac,\n
+				append/ac/"ins"
+				set/"aci",0
+				repeat/ac
+					calc/"aci=aci+1"
+					// Ask for input count
+					print/"a",aci,"-ic: "
+					read/"","ic"
+					print/ic,\n
+					append/ic/"ins"
+					set/"ici",0
+					repeat/ic
+						calc/"ici=ici+1"
+						// Ask for input (ici) of argument (aci)
+						print/"a",aci,"-i",ici,": "
+						read/"","in"
+						print/in,\n
+						append/in/"ins"
+					endloop
+				endloop
+			endif
+		else
+			// This is a command
+			source/val
+		endif
+	endif
+endloop

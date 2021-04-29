@@ -1,0 +1,126 @@
+// SMC Console
+//
+//    Copyright (C) 2021  adazem009
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+linkdef/"_cmd_help","cmd_help"
+{
+	warp
+		print>
+			"Usage: clear - clear screen"
+			"       exit - shut down"
+			"       quit - quit SMC Console"
+			"       run - run SMC as child process"
+			"       exec - overwrite console with SMC"
+			"       runbg - run SMC in background"
+			"       reset - remove all instructions"
+			"       import - import SMC binary"
+			"       export - export SMC"
+			"       view - view current instructions"
+			"       version - show version
+			"       <any-other> - add SMC instruction"
+		<print
+	endwarp
+}
+linkdef/"_cmd_clear","cmd_clear"
+{
+	clear
+}
+linkdef/"_cmd_exit","cmd_exit"
+{
+	_exit
+}
+linkdef/"_cmd_run","cmd_run"
+{
+	_compose
+	run/SMC,"wait"
+}
+linkdef/"_cmd_exec","cmd_exec"
+{
+	_compose
+	run/SMC,"bg"
+	_exit
+}
+linkdef/"_cmd_runbg","cmd_runbg"
+{
+	_compose
+	run/SMC,"bg"
+}
+linkdef/"_cmd_reset","cmd_reset"
+{
+	setlist/"ins"
+}
+linkdef/"_cmd_import","cmd_import"
+{
+	print/"SMC Binary:",\n
+	read/"","bin"
+	_loadbin
+}
+linkdef/"_cmd_export","cmd_export"
+{
+	_compose
+	setlist/"cp"/"Copy the binary below and press enter:",SMC
+	showcplist/"cp"
+	keywait/"enter"
+	hidecplist
+}
+linkdef/"_cmd_view","cmd_view"
+{
+	// This is buggy right now!
+	print/"This command is not available in this build.",\n
+	//set/"key",""/"pos",0
+	//getlistlength/"ins"/"c"
+	//calc/"c2=c-20"
+	//while/[key != "q"]
+	//	warp
+	//		clear
+	//		set/"i",pos
+	//		repeat/20
+	//			calc/"i=i+1"
+	//			getitem/"ins",i/"cins"
+	//			print/cins,\n
+	//		endloop
+	//		getkey/"ks"
+	//		getitem/"ks",1/"key"
+	//		set/"arr","up arrow"
+	//		// ^^^ workaround for a compiler bug
+	//		if/[key == arr]
+	//			if/[pos > 1]
+	//				calc/"pos=pos-1"
+	//			endif
+	//		else
+	//			set/"arr","down arrow"
+	//			// ^^^ another workaround
+	//			if/[key == arr]
+	//				if/[pos < c2]
+	//					calc/"pos=pos+1"
+	//				endif
+	//			endif
+	//		endif
+	//		print/\n,"q - quit; arrow keys - navigate"
+	//	endwarp
+	//endloop
+	//clear
+}
+linkdef/"_cmd_quit","cmd_quit"
+{
+	print/"Bye!",\n
+	exit
+}
+linkdef/"_cmd_version","cmd_version"
+{
+	print/"SMC Console ",VER,\n,\n
+	gplnotice/2021,"adazem009","3+","GNU GPL version 3 or later"
+}
