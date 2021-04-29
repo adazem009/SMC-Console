@@ -1,6 +1,6 @@
 # SMC-Console
 A debugging tool for SMC Computer.
-Can be used as a BIOS (default setting), or as a program in EarthOS (to debug EMC).
+Can be used as a BIOS (default setting), or as a program in EarthOS (to debug EMC) - with some changes in the source code.
 
 ## Building from source
 
